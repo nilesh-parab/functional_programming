@@ -27,3 +27,23 @@ console.log(decrement(2));
 const incAndMul = n => multiplyBy2(increment(n));
 
 console.log(incAndMul(10));
+
+// Trace is useful for debugging composed / curried functions
+const trace = label => value => {
+	console.log(`${ label }: ${ value }`);
+	// returning original value because trace has to pass value to other functions in the pipeline
+	return value;
+}
+
+// Note here we are using partiall functions here as value will be passed during reduce
+const traceComposed = compose(
+		trace('after increment'), 
+		increment, 
+		trace('after multiplyBy2'), 
+		multiplyBy2, 
+		trace('after decrement'), 
+		decrement);
+
+traceComposed(20);
+
+// compose is generally evaluating right to left whereas pipe evaluates left to right
